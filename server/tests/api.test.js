@@ -2,14 +2,11 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('TechFest 2026 Security & API Test Suite', () => {
-  // Test 1: Verification of Security Headers via Helmet
   describe('Security Headers (Helmet)', () => {
     it('should include key OWASP security headers in API responses', async () => {
       const res = await request(app).get('/api/health');
       expect(res.statusCode).toEqual(200);
       expect(res.body.status).toBe('healthy');
-
-      // Check security headers injected by Helmet
       expect(res.headers).toHaveProperty('content-security-policy');
       expect(res.headers).toHaveProperty('x-content-type-options', 'nosniff');
       expect(res.headers).toHaveProperty('x-frame-options', 'SAMEORIGIN');
@@ -17,21 +14,16 @@ describe('TechFest 2026 Security & API Test Suite', () => {
     });
   });
 
-  // Test 2: NoSQL Injection Mitigation (express-mongo-sanitize)
   describe('NoSQL Injection Prevention (OWASP A03: Injection)', () => {
     it('should strip $ operators from malicious NoSQL injection objects', async () => {
       const maliciousPayload = {
         email: { $gt: '' },
         password: { $ne: null }
       };
-
       const res = await request(app)
         .post('/api/security-lab/inspect-nosql')
         .send(maliciousPayload);
-
       expect(res.statusCode).toEqual(200);
-      // express-mongo-sanitize cleanses keys that start with '$'
-      // Thus, $gt and $ne are stripped or emptied
       expect(res.body.receivedPayload.email).not.toHaveProperty('$gt');
       expect(res.body.receivedPayload.password).not.toHaveProperty('$ne');
     });
@@ -41,17 +33,13 @@ describe('TechFest 2026 Security & API Test Suite', () => {
         email: { $ne: null },
         password: { $ne: null }
       };
-
       const res = await request(app)
         .post('/api/auth/login')
         .send(maliciousLogin);
-
-      // Either express-validator or type check rejects object injection
       expect(res.statusCode).toBeGreaterThanOrEqual(400);
     });
   });
 
-  // Test 3: Cross-Site Scripting (XSS) Sanitization (OWASP A03)
   describe('Stored / Reflected XSS Prevention', () => {
     it('should sanitize script tags in submitted user feedback', async () => {
       const xssPayload = {
@@ -60,38 +48,28 @@ describe('TechFest 2026 Security & API Test Suite', () => {
         rating: 5,
         comment: "<script>alert('hi')</script>"
       };
-
       const res = await request(app)
         .post('/api/feedback')
         .send(xssPayload);
-
-      // If database is mocked or offline, route might return 201 or 500, but if validation runs:
       if (res.statusCode === 201) {
         expect(res.body.data.comment).not.toContain('<script>');
         expect(res.body.data.comment).toContain('&lt;script&gt;');
       } else {
-        // Validation handled properly
         expect(res.statusCode).toBeDefined();
       }
     });
 
     it('should reject feedback submission with invalid missing fields', async () => {
-      const emptyPayload = {
-        author: '',
-        comment: ''
-      };
-
+      const emptyPayload = { author: '', comment: '' };
       const res = await request(app)
         .post('/api/feedback')
         .send(emptyPayload);
-
       expect(res.statusCode).toEqual(400);
       expect(res.body.success).toBe(false);
       expect(res.body.errors.length).toBeGreaterThan(0);
     });
   });
 
-  // Test 4: Events API & Performance Readiness
   describe('TechFest Events Service', () => {
     it('should return the catalog of TechFest 2026 events', async () => {
       const res = await request(app).get('/api/events');
@@ -102,7 +80,6 @@ describe('TechFest 2026 Security & API Test Suite', () => {
     });
   });
 
-  // Test 5: Authentication Validation
   describe('User Authentication Validation', () => {
     it('should reject registration with invalid email and weak password', async () => {
       const badUser = {
@@ -110,14 +87,20 @@ describe('TechFest 2026 Security & API Test Suite', () => {
         email: 'invalid-email-format',
         password: '123'
       };
-
       const res = await request(app)
         .post('/api/auth/register')
         .send(badUser);
-
       expect(res.statusCode).toEqual(400);
       expect(res.body.success).toBe(false);
       expect(res.body.errors).toBeDefined();
+    });
+
+    // ============================================================
+    // THIS TEST IS INTENTIONALLY BROKEN — demonstrates a CI red run.
+    // (Step 11: push broken test → see red → fix → push again → green)
+    // ============================================================
+    it('[INTENTIONALLY FAILING] broken test for CI red-run demonstration', async () => {
+      expect(1).toBe(2); // This will always fail
     });
   });
 });
