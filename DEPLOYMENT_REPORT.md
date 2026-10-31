@@ -397,9 +397,9 @@ Time:        3.498 s
 
 | Component | Target Platform | Live URL / Endpoint | Protocol & Status |
 | :--- | :--- | :--- | :--- |
-| **Frontend UI** | Netlify / Vercel | `https://techfest2026.netlify.app` | HTTPS (SSL Active) |
-| **Backend API** | Render Cloud | `https://techfest2026-api.onrender.com` | HTTPS (Helmet Active) |
-| **Database** | MongoDB Atlas | `cluster0.mongodb.net/techfest2026` | TLS 1.3 Encrypted |
+| **Frontend UI** | Vercel Edge CDN | `https://techfest-2026-portal-nine.vercel.app` | HTTPS (SSL Active) |
+| **Backend API** | Render Cloud | `https://techfest-2026-api.onrender.com` | HTTPS (Helmet Active) |
+| **Database** | MongoDB Atlas | `cluster0.wdqvjrs.mongodb.net/techfest2026` | TLS 1.3 Encrypted |
 
 ---
 
