@@ -1,0 +1,27 @@
+{
+  "name": "techfest-2026-portal",
+  "version": "1.0.0",
+  "description": "TechFest 2026 Production MERN Portal with OWASP Security, CI/CD, and Cloud Deployment",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "node server/server.js",
+    "client": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "test": "npm test --prefix server"
+  },
+  "keywords": [
+    "mern",
+    "owasp",
+    "helmet",
+    "nosql-injection",
+    "xss",
+    "csrf",
+    "ci-cd",
+    "render",
+    "netlify",
+    "mongodb-atlas"
+  ],
+  "author": "Sayooj S",
+  "license": "ISC"
+}

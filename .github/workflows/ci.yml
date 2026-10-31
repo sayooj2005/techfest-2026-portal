@@ -1,0 +1,62 @@
+name: TechFest 2026 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, 'feature/**' ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend-test:
+    name: Backend Security & API Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime (v22.x)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: './server/package-lock.json'
+
+      - name: Install Backend Dependencies
+        run: npm ci
+
+      - name: Run Jest & Supertest Security Suite
+        run: npm test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: ci_test_secret_key_12345
+          COOKIE_SECRET: ci_cookie_secret_98765
+
+  frontend-build:
+    name: Frontend Client Build & Optimization
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./client
+
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime (v22.x)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: './client/package-lock.json'
+
+      - name: Install Frontend Dependencies
+        run: npm ci
+
+      - name: Build Optimized Production Bundle
+        run: npm run build
