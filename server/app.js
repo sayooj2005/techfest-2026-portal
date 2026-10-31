@@ -3,7 +3,8 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const authRoutes = require('./routes/auth');
 const feedbackRoutes = require('./routes/feedback');
