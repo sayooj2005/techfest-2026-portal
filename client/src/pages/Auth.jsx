@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, UserCheck, ShieldAlert, ShieldCheck, Key, AlertCircle, Cookie, CheckCircle } from 'lucide-react';
+import API_URL from '../api';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,7 +20,7 @@ const Auth = () => {
     const payload = isLogin ? { email, password } : { name, email, password, role };
 
     try {
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include', // Needed for HTTP-Only cookie transfer
@@ -80,7 +81,7 @@ const Auth = () => {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(maliciousPayload)

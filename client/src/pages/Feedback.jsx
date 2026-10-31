@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, ShieldAlert, ShieldCheck, AlertTriangle, Send, RefreshCw, Terminal } from 'lucide-react';
+import API_URL from '../api';
 
 const INITIAL_FEEDBACKS = [
   {
@@ -31,7 +32,7 @@ const Feedback = () => {
   const [xssTriggeredNotice, setXssTriggeredNotice] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/feedback')
+    fetch(`${API_URL}/api/feedback`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
@@ -85,7 +86,7 @@ const Feedback = () => {
     });
 
     // Also attempt POST to backend API
-    fetch('http://localhost:5000/api/feedback', {
+    fetch(`${API_URL}/api/feedback`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newFeedback)

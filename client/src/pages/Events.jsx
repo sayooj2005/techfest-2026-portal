@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, CheckCircle, ExternalLink } from 'lucide-react';
+import API_URL from '../api';
 
 const EVENTS_FALLBACK = [
   {
@@ -50,7 +51,7 @@ const Events = () => {
 
   useEffect(() => {
     // Attempt to fetch live events from API
-    fetch('http://localhost:5000/api/events')
+    fetch(`${API_URL}/api/events`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data) {
