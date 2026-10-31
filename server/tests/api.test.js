@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('TechFest 2026 Security & API Test Suite', () => {
+  // Test 1: Verification of Security Headers via Helmet
   describe('Security Headers (Helmet)', () => {
     it('should include key OWASP security headers in API responses', async () => {
       const res = await request(app).get('/api/health');
@@ -14,6 +15,7 @@ describe('TechFest 2026 Security & API Test Suite', () => {
     });
   });
 
+  // Test 2: NoSQL Injection Mitigation (express-mongo-sanitize)
   describe('NoSQL Injection Prevention (OWASP A03: Injection)', () => {
     it('should strip $ operators from malicious NoSQL injection objects', async () => {
       const maliciousPayload = {
@@ -40,6 +42,7 @@ describe('TechFest 2026 Security & API Test Suite', () => {
     });
   });
 
+  // Test 3: Cross-Site Scripting (XSS) Sanitization (OWASP A03)
   describe('Stored / Reflected XSS Prevention', () => {
     it('should sanitize script tags in submitted user feedback', async () => {
       const xssPayload = {
@@ -70,6 +73,7 @@ describe('TechFest 2026 Security & API Test Suite', () => {
     });
   });
 
+  // Test 4: Events API
   describe('TechFest Events Service', () => {
     it('should return the catalog of TechFest 2026 events', async () => {
       const res = await request(app).get('/api/events');
@@ -80,6 +84,7 @@ describe('TechFest 2026 Security & API Test Suite', () => {
     });
   });
 
+  // Test 5: Authentication Validation
   describe('User Authentication Validation', () => {
     it('should reject registration with invalid email and weak password', async () => {
       const badUser = {
@@ -93,14 +98,6 @@ describe('TechFest 2026 Security & API Test Suite', () => {
       expect(res.statusCode).toEqual(400);
       expect(res.body.success).toBe(false);
       expect(res.body.errors).toBeDefined();
-    });
-
-    // ============================================================
-    // THIS TEST IS INTENTIONALLY BROKEN — demonstrates a CI red run.
-    // (Step 11: push broken test → see red → fix → push again → green)
-    // ============================================================
-    it('[INTENTIONALLY FAILING] broken test for CI red-run demonstration', async () => {
-      expect(1).toBe(2); // This will always fail
     });
   });
 });
