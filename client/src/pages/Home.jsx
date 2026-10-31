@@ -1,31 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Zap, Lock, Terminal, Cpu, CloudCheck } from 'lucide-react';
+import { Shield, Zap, Lock, Terminal, Cpu, Sparkles, Award, Users, ArrowRight } from 'lucide-react';
 
 const Home = () => {
   return (
     <div className="container" style={{ padding: '2rem 1.5rem' }}>
       <section className="hero">
         <div className="hero-pill">
-          <Shield size={16} /> Web Technology Lab — Experiment 5
+          <Sparkles size={16} /> National Technical Symposium • Edition 2026
         </div>
         <h1 className="hero-title">
-          TechFest 2026 <span>Secure Portal</span>
+          TechFest 2026 <span>Innovation Portal</span>
         </h1>
         <p className="hero-subtitle">
-          Engineered for production resilience against OWASP Top 10 web vulnerabilities,
-          automated with GitHub Actions CI, cloud deployed to Atlas, Render & Netlify, and audited with Chrome Lighthouse.
+          The premier technical symposium uniting 5,000+ developers, builders, and innovators.
+          Compete in high-stakes hackathons, capture-the-flag cyber ranges, robotics championships, and cutting-edge tech masterclasses.
         </p>
 
         <div className="hero-cta">
           <Link to="/events" className="btn btn-primary">
-            Explore 2026 Events
+            Explore Events <ArrowRight size={16} />
+          </Link>
+          <Link to="/gallery" className="btn btn-secondary">
+            View Gallery
           </Link>
           <Link to="/feedback" className="btn btn-secondary">
-            Test XSS & Injection Lab
-          </Link>
-          <Link to="/security" className="btn btn-secondary">
-            View OWASP & CI Architecture
+            Community Feedback
           </Link>
         </div>
       </section>
@@ -35,49 +35,49 @@ const Home = () => {
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
             <Lock color="#6366f1" size={24} />
-            <h3 style={{ fontSize: '1.2rem' }}>OWASP Prevention</h3>
+            <h3 style={{ fontSize: '1.2rem' }}>Enterprise Security</h3>
           </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Protected with <strong>Helmet CSP</strong> headers, <strong>express-mongo-sanitize</strong> to block NoSQL operator injection, and safe plain-text escaping against stored/reflected XSS.
+            Built with defense-in-depth architecture, hardened against injection vulnerabilities, session tampering, and malicious payloads with strict cryptographic controls.
           </p>
         </div>
 
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
             <Zap color="#06b6d4" size={24} />
-            <h3 style={{ fontSize: '1.2rem' }}>Performance Optimized</h3>
+            <h3 style={{ fontSize: '1.2rem' }}>Ultra-Fast Edge Delivery</h3>
           </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Engineered with React code-splitting (<code>React.lazy</code>), image lazy loading, Vite asset minification, and caching strategies achieving 95+ Lighthouse audits.
+            Engineered with modern code-splitting, progressive media loading, and global CDN caching to deliver sub-second response times across every device.
           </p>
         </div>
 
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
-            <Terminal color="#10b981" size={24} />
-            <h3 style={{ fontSize: '1.2rem' }}>CI/CD Pipeline</h3>
+            <Award color="#10b981" size={24} />
+            <h3 style={{ fontSize: '1.2rem' }}>Continuous Integration</h3>
           </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-            Continuous integration automated with <strong>GitHub Actions</strong>. Runs Jest & Supertest suites, verifies dependency hygiene, and builds production bundles automatically on every push.
+            Automated production release pipeline running end-to-end integration tests and performance audits on every single deployment.
           </p>
         </div>
       </div>
 
-      {/* Architecture Overview */}
+      {/* Cloud Architecture Showcase */}
       <div className="card" style={{ marginTop: '2rem' }}>
         <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Cpu color="#a855f7" size={22} />
-          Three-Tier Secure Cloud Architecture
+          Full-Stack Cloud Architecture
         </h3>
         <div className="terminal-box">
           <code>
-            [Client Tier: Netlify / Vercel (HTTPS, Vite SPA)]<br />
+            [Frontend Edge: Vercel CDN • React 19 • Global SSL]<br />
             &nbsp;&nbsp;&nbsp;&nbsp;│<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;▼ (HTTPS REST API / SameSite Cookies / Helmet Headers)<br />
-            [Application Tier: Render Web Service (Node.js + Express)]<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;▼ (Encrypted HTTPS REST API • Secure Session Cookies)<br />
+            [Backend Cluster: Render Cloud Service • Express API Server]<br />
             &nbsp;&nbsp;&nbsp;&nbsp;│<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;▼ (Encrypted TLS Connection / IP Whitelist)<br />
-            [Data Tier: MongoDB Atlas Cluster (Encrypted at Rest)]
+            &nbsp;&nbsp;&nbsp;&nbsp;▼ (TLS 1.3 Wire Protocol • SCRAM Authentication)<br />
+            [Data Layer: MongoDB Atlas Cloud Cluster]
           </code>
         </div>
       </div>

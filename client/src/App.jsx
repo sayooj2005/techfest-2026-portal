@@ -22,7 +22,7 @@ function App() {
             fallback={
               <div style={{ padding: '5rem', textAlign: 'center', color: '#818cf8', fontSize: '1.2rem' }}>
                 <div style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⚡</div>
-                <div style={{ marginTop: '1rem' }}>Lazy Loading Gallery Component Chunk...</div>
+                <div style={{ marginTop: '1rem' }}>Loading Gallery...</div>
               </div>
             }
           >

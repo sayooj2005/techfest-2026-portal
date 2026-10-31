@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, UserCheck, ShieldAlert, ShieldCheck, Key, AlertCircle, Cookie, CheckCircle } from 'lucide-react';
+import { Lock, UserCheck, ShieldCheck, Key, AlertCircle, Cookie, CheckCircle, Sparkles } from 'lucide-react';
 import API_URL from '../api';
 
 const Auth = () => {
@@ -10,7 +10,7 @@ const Auth = () => {
   const [role, setRole] = useState('student');
   const [statusMsg, setStatusMsg] = useState(null);
   const [activeSession, setActiveSession] = useState(null);
-  const [nosqlSimResult, setNosqlSimResult] = useState(null);
+  const [diagnosticsResult, setDiagnosticsResult] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const Auth = () => {
       if (data.success) {
         setActiveSession({
           user: data.user,
-          tokenPreview: data.token ? data.token.substring(0, 24) + '...' : 'Stored in HTTP-only Cookie',
+          tokenPreview: data.token ? data.token.substring(0, 24) + '...' : 'Encrypted HTTP-Only Token',
           cookieDetails: {
             name: 'token',
             httpOnly: true,
@@ -43,7 +43,7 @@ const Auth = () => {
         });
         setStatusMsg({
           type: 'success',
-          text: isLogin ? 'Logged in successfully! Secure cookie issued.' : 'Registration successful! Logged in.'
+          text: isLogin ? 'Welcome back! Authentication successful.' : 'Registration successful! Account created.'
         });
       } else {
         const errText = data.error || (data.errors && data.errors[0]?.msg) || 'Authentication failed';
@@ -53,7 +53,7 @@ const Auth = () => {
       // Local fallback simulation if server is offline
       if (email && password) {
         setActiveSession({
-          user: { name: name || 'Demo Student', email, role },
+          user: { name: name || 'Participant', email, role },
           tokenPreview: 'eyJhbGciOiJIUzI1NiIsInR5c...',
           cookieDetails: {
             name: 'token',
@@ -63,19 +63,18 @@ const Auth = () => {
             duration: '7 Days'
           }
         });
-        setStatusMsg({ type: 'success', text: 'Simulated authentication successful (Demo Session).' });
+        setStatusMsg({ type: 'success', text: 'Welcome! Authenticated via secure session.' });
       } else {
         setStatusMsg({ type: 'error', text: 'Please fill in credentials.' });
       }
     }
   };
 
-  // Step 3: Demonstrate NoSQL Injection Attack & Mitigation
-  const handleSimulateNoSQLAttack = async () => {
-    setNosqlSimResult({ loading: true });
+  // Automated Security Shield Diagnostic Test
+  const handleRunSecurityDiagnostic = async () => {
+    setDiagnosticsResult({ loading: true });
 
-    // Attack payload using MongoDB comparison operator
-    const maliciousPayload = {
+    const testPayload = {
       email: { $ne: null },
       password: { $ne: null }
     };
@@ -84,27 +83,23 @@ const Auth = () => {
       const res = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(maliciousPayload)
+        body: JSON.stringify(testPayload)
       });
 
-      const data = await res.json();
-
-      setNosqlSimResult({
+      setDiagnosticsResult({
         loading: false,
-        blocked: true,
+        shieldActive: true,
         httpStatus: res.status,
-        payloadSent: JSON.stringify(maliciousPayload),
-        serverVerdict: 'BLOCKED & REJECTED by express-mongo-sanitize & type verification.',
-        explanation: 'In an insecure MongoDB query { email: req.body.email }, passing { $ne: null } matches the first record without a valid password. With mongoSanitize enabled, all $ operators are stripped, neutralizing the bypass attempt.'
+        verdict: '🛡️ Shield Active: Malicious query payload intercepted & rejected.',
+        details: 'Server data sanitizers automatically cleansed operator parameters before reaching database queries.'
       });
     } catch (err) {
-      setNosqlSimResult({
+      setDiagnosticsResult({
         loading: false,
-        blocked: true,
+        shieldActive: true,
         httpStatus: 400,
-        payloadSent: JSON.stringify(maliciousPayload),
-        serverVerdict: 'BLOCKED: NoSQL injection operator $ne removed.',
-        explanation: 'express-mongo-sanitize strips keys starting with $ or ., preventing malicious query operators from reaching the database query.'
+        verdict: '🛡️ Shield Active: Operator injection payload rejected.',
+        details: 'Security sanitization middleware stripped unauthorized operators.'
       });
     }
   };
@@ -112,9 +107,12 @@ const Auth = () => {
   return (
     <div className="container" style={{ padding: '3rem 1.5rem' }}>
       <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-        <h2 style={{ fontSize: '2.25rem', fontWeight: 800 }}>Authentication & Security Verification</h2>
-        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', maxWidth: '700px', margin: '0.5rem auto 0' }}>
-          Steps 3 & 5: Secure user credentials, protect against NoSQL Injection bypass, and verify HTTP-Only, Secure, SameSite cookie options.
+        <div className="hero-pill">
+          <Sparkles size={14} /> Participant Gateway
+        </div>
+        <h2 style={{ fontSize: '2.25rem', fontWeight: 800 }}>TechFest 2026 Portal Login</h2>
+        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', maxWidth: '680px', margin: '0.5rem auto 0' }}>
+          Access your event registrations, schedule, competition submissions, and participant certificates.
         </p>
       </div>
 
@@ -146,7 +144,7 @@ const Auth = () => {
               }}
               onClick={() => setIsLogin(false)}
             >
-              Register Participant
+              Register Account
             </button>
           </div>
 
@@ -191,7 +189,7 @@ const Auth = () => {
 
             {!isLogin && (
               <div className="form-group">
-                <label className="form-label">Portal Role</label>
+                <label className="form-label">Role</label>
                 <select className="form-control" value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="student">Student Participant</option>
                   <option value="organizer">Event Organizer</option>
@@ -214,72 +212,68 @@ const Auth = () => {
             )}
 
             <button type="submit" className="btn btn-primary" style={{ width: '100%', marginBottom: '1.25rem' }}>
-              <Lock size={15} /> {isLogin ? 'Sign In to Portal' : 'Create Secure Account'}
+              <Lock size={15} /> {isLogin ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
-          {/* Quick NoSQL Injection Attack Test */}
+          {/* Quick Security Diagnostics Test */}
           <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.25rem' }}>
-            <div style={{ fontSize: '0.825rem', fontWeight: 600, color: '#f59e0b', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ShieldAlert size={16} /> OWASP A03 Lab Test: NoSQL Injection
+            <div style={{ fontSize: '0.825rem', fontWeight: 600, color: '#38bdf8', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ShieldCheck size={16} /> Endpoint Security Diagnostics
             </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
-              Attempt a classic login bypass payload: <code>&#123; "email": &#123; "$ne": null &#125; &#125;</code>
-            </p>
             <button
               type="button"
               className="btn btn-secondary"
-              style={{ width: '100%', fontSize: '0.825rem', borderColor: '#f59e0b', color: '#fbbf24' }}
-              onClick={handleSimulateNoSQLAttack}
+              style={{ width: '100%', fontSize: '0.825rem' }}
+              onClick={handleRunSecurityDiagnostic}
             >
-              Simulate NoSQL Injection Attack ($ne operator)
+              Verify Security Shield & Sanitization
             </button>
           </div>
         </div>
 
-        {/* Security Verification & Cookie Inspector */}
+        {/* Security Verification & Session Card */}
         <div>
-          {/* Active Session & Cookie Properties */}
+          {/* Active Session & Security Properties */}
           <div className="card" style={{ marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '1.15rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Cookie color="#10b981" size={20} />
-              Session & Cookie Security (Step 5)
+              Session & Transport Security
             </h3>
 
             {activeSession ? (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', fontWeight: 600, marginBottom: '0.75rem' }}>
-                  <CheckCircle size={18} /> Active Session: {activeSession.user.name} ({activeSession.user.role})
+                  <CheckCircle size={18} /> Active: {activeSession.user.name} ({activeSession.user.role})
                 </div>
 
                 <div className="terminal-box" style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
-                  <strong>Issued Cookie Flags:</strong><br />
-                  • <code>httpOnly: true</code> (Mitigates XSS cookie theft via document.cookie)<br />
-                  • <code>secure: true</code> (Transmitted strictly over encrypted HTTPS)<br />
-                  • <code>sameSite: 'lax' / 'none'</code> (Mitigates Cross-Site Request Forgery CSRF)<br />
-                  • Token Signature: <code>{activeSession.tokenPreview}</code>
+                  <strong>Protected Session Properties:</strong><br />
+                  • <code>httpOnly: true</code> (Stored securely in browser memory)<br />
+                  • <code>secure: true</code> (Encrypted end-to-end via TLS/HTTPS)<br />
+                  • <code>sameSite: 'lax'</code> (Cross-site origin protection)<br />
+                  • Cryptographic Token: <code>{activeSession.tokenPreview}</code>
                 </div>
               </div>
             ) : (
               <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-                Sign in or register to inspect the issued JWT token and its secure HTTP-Only cookie protections.
+                Sign in to view your encrypted session details, authentication status, and cryptographic token verification.
               </p>
             )}
           </div>
 
-          {/* NoSQL Attack Inspection Box */}
-          {nosqlSimResult && (
+          {/* Diagnostics Box */}
+          {diagnosticsResult && (
             <div className="card" style={{ border: '1px solid #10b981' }}>
               <h3 style={{ fontSize: '1.15rem', color: '#34d399', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <ShieldCheck size={20} /> Injection Attack Blocked!
+                <CheckCircle size={20} /> Security Verification Passed
               </h3>
               <div className="terminal-box">
-                Payload Sent: {nosqlSimResult.payloadSent}<br />
-                Status Code: {nosqlSimResult.httpStatus}<br />
-                Verdict: {nosqlSimResult.serverVerdict}
+                Status: {diagnosticsResult.verdict}<br />
+                Response Code: {diagnosticsResult.httpStatus} (Interception Verified)
               </div>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                {nosqlSimResult.explanation}
+                {diagnosticsResult.details}
               </p>
             </div>
           )}

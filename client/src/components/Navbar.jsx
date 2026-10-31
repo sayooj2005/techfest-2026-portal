@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Calendar, Image, MessageSquare, Lock, Activity } from 'lucide-react';
+import { ShieldCheck, Calendar, Image, MessageSquare, Lock, Activity, Sparkles } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="container nav-container">
         <Link to="/" className="brand-logo">
-          <ShieldCheck size={26} color="#6366f1" />
+          <Sparkles size={24} color="#6366f1" />
           <span>TechFest 2026</span>
         </Link>
 
@@ -28,19 +28,19 @@ const Navbar = () => {
           <li>
             <Link to="/gallery" className={isActive('/gallery')}>
               <Image size={16} style={{ marginRight: '6px', verticalAlign: 'text-bottom' }} />
-              Gallery (Lazy)
+              Gallery
             </Link>
           </li>
           <li>
             <Link to="/feedback" className={isActive('/feedback')}>
               <MessageSquare size={16} style={{ marginRight: '6px', verticalAlign: 'text-bottom' }} />
-              XSS Lab & Feedback
+              Feedback
             </Link>
           </li>
           <li>
             <Link to="/security" className={isActive('/security')}>
-              <Activity size={16} style={{ marginRight: '6px', verticalAlign: 'text-bottom' }} />
-              OWASP & CI/CD
+              <ShieldCheck size={16} style={{ marginRight: '6px', verticalAlign: 'text-bottom' }} />
+              Security
             </Link>
           </li>
           <li>
@@ -53,7 +53,7 @@ const Navbar = () => {
 
         <div className="badge-secure">
           <span>●</span>
-          <span>HTTPS & CSP Protected</span>
+          <span>Verified Secure</span>
         </div>
       </div>
     </nav>

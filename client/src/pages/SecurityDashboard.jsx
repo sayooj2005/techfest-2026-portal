@@ -38,9 +38,9 @@ const SecurityDashboard = () => {
   return (
     <div className="container" style={{ padding: '3rem 1.5rem' }}>
       <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-        <h2 style={{ fontSize: '2.25rem', fontWeight: 800 }}>OWASP Security & CI/CD Pipeline Dashboard</h2>
+        <h2 style={{ fontSize: '2.25rem', fontWeight: 800 }}>System Architecture & Security Platform</h2>
         <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem', maxWidth: '720px', margin: '0.5rem auto 0' }}>
-          Comprehensive overview of security fortifications, version control branching strategies, automated testing, and cloud deployment.
+          Real-time overview of cloud infrastructure, automated CI/CD pipeline verification, and defense-in-depth security matrix.
         </p>
       </div>
 
