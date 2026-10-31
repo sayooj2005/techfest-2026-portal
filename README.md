@@ -1,6 +1,6 @@
 # TechFest 2026 — Secure Production MERN Portal
 
-[BRANCH MAIN] Ultra-secure production-ready MERN application for TechFest 2026 with OWASP mitigation. Fortified against the OWASP Top 10 vulnerabilities, integrated with GitHub Actions CI, and configured for multi-cloud deployment.
+A production-ready Full-Stack MERN application engineered for the TechFest 2026 National Innovation Symposium. Fortified against the OWASP Top 10 vulnerabilities, integrated with GitHub Actions CI, and configured for multi-cloud deployment.
 
 ## Architecture
 - **Frontend**: React 19 + Vite (SPA with code splitting & lazy loading)
